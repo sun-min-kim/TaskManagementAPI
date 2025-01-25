@@ -1,5 +1,11 @@
-# Dockerfile for containerization
+FROM python:3.9
 
-# Set up separate Docker-Compose to manage multi-container setup (API + database)
+WORKDIR /app
 
-FROM python:3.9-slim
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["flask", "run", "--host=0.0.0.0"]
