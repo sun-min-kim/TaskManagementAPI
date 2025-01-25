@@ -1,1 +1,1 @@
-# Database initialization
+# Database initialization (SQL Alchemy)
