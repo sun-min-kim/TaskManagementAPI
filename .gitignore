@@ -7,3 +7,6 @@ venv/
 # Sensitive variables
 .env
 cookie.txt
+
+# System files
+.DS_Store
