@@ -1,8 +1,9 @@
-# src
+# app
 app/__pycache__
 
 # Virtual environment
 venv/
 
-# Environment variables
+# Sensitive variables
 .env
+cookie.txt

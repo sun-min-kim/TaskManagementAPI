@@ -1,6 +1,7 @@
 Flask
 Flask-SQLAlchemy
 Flask-Migrate
+Flask-Login
 PyMySQL
 python-dotenv
 cryptography
