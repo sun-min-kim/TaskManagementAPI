@@ -173,8 +173,6 @@ To manually access the MySQL database running in your Docker container, follow t
 
 8. **Exit MySQL and the Container**: To exit MySQL, type:
 
-    To exit the container shell, simply type:
-
     ```sql
     EXIT;
     ```

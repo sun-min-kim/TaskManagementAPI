@@ -6,6 +6,9 @@ from flask_login import UserMixin
 db = SQLAlchemy()
 
 class User(db.Model, UserMixin):
+    """
+    User model for storing user information.
+    """
     __tablename__ = 'users'
 
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
@@ -13,12 +16,22 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128), nullable=False)
 
     def set_password(self, password):
+        """
+        Hashes the password and stores it in the password_hash field.
+        """
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
+        """
+        Verifies the password against the stored hash.
+        """
         return check_password_hash(self.password_hash, password)
 
 class Task(db.Model):
+    """
+    Task model for storing task details.
+    Each task is associated with a specific user via a foreign key.
+    """
     __tablename__ = 'tasks'
 
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
