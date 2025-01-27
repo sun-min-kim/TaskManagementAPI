@@ -6,7 +6,7 @@ This is a Task Management API built with Flask, allowing users to create, read, 
 - [Prerequisites](#prerequisites)
 - [Setup and Run](#setup-and-run)
 - [Testing the API](#testing-the-api)
-- [Accessing the MySQL Database in Docker](#accessing-the-mysql-database-in-docker)
+- [Accessing the MySQL Database Manually](#accessing-the-mysql-database-manually)
 
 ## Prerequisites
 
@@ -120,7 +120,7 @@ You can test the API endpoints using cURL.
     -b cookie.txt
     ```
 
-## Accessing the MySQL Database in Docker
+## Accessing the MySQL Database Manually
 
 To manually access the MySQL database running in your Docker container, follow these steps:
 
