@@ -24,7 +24,7 @@ Follow these steps to set up and run the API locally using Docker Compose:
 
    ```bash
    git clone https://github.com/sun-min-kim/TaskManagementAPI.git
-   cd task-management-api
+   cd TaskManagementAPI
    ```
 
 2. **Create a `.env` file** in the root of the project and define the necessary environment variables:
