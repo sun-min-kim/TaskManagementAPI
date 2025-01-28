@@ -19,6 +19,7 @@ def create_task():
 
     Possible Responses:
     - 201: Task created successfully, returns the task ID.
+    - 401: Unauthorized - User must be logged in to create a task.
     """
     data = request.json
     task = Task(
@@ -44,6 +45,7 @@ def get_tasks():
     - 200: Returns a list of tasks in the following format:
         [{ "id": <task_id>, "title": <task_title>, "description": <task_description>, 
         "dueDate": <due_date_in_ISO_format>, "status": <task_status> }, ...]
+    - 401: Unauthorized - User must be logged in to create a task.
     - 404: No tasks found for the logged-in user.
     """
     tasks = Task.query.filter_by(user_id=current_user.id).all()
@@ -52,7 +54,7 @@ def get_tasks():
         return jsonify({"message": "No tasks found for the current user."}), 404
     else:
         return jsonify([{'id': task.id, 'title': task.title, 'description': task.description,
-                         'dueDate': task.due_date.isoformat(), 'status': task.status} for task in tasks]), 200
+                        'dueDate': task.due_date.isoformat(), 'status': task.status} for task in tasks]), 200
 
 @tasks_bp.route('/tasks/<string:id>', methods=['GET'])
 @login_required
@@ -69,9 +71,11 @@ def get_task(id):
     - 200: Returns the task in the following format:
     {"id": <task_id>, "title": <task_title>, "description": <task_description>, 
     "dueDate": <due_date_in_ISO_format>, "status": <task_status>}
+    - 401: Unauthorized - User must be logged in to create a task.
     - 404: Task not found or does not belong to the logged-in user.
     """
     task = Task.query.filter_by(id=id, user_id=current_user.id).first()
+    
     if not task:
         return jsonify({"message": f"No task found with ID {id} for the current user."}), 404
     else:
@@ -96,9 +100,11 @@ def update_task(id):
     Possible Responses:
     - 200: Task updated successfully, returns the task ID.
     - 400: Missing or invalid fields in JSON, or update operation failed.
+    - 401: Unauthorized - User must be logged in to create a task.
     - 404: Task not found or does not belong to the logged-in user.
     """
     task = Task.query.filter_by(id=id, user_id=current_user.id).first()
+
     if not task:
         return jsonify({"message": f"No task found with ID {id} for the current user."}), 404
     
@@ -126,11 +132,12 @@ def delete_task(id):
 
     Possible Responses:
     - 200: Task deleted successfully, returns a confirmation message.
-    - 404: Task not found or does not belong to the logged-in user.
     - 400: Deletion operation failed.
-
+    - 401: Unauthorized - User must be logged in to create a task.
+    - 404: Task not found or does not belong to the logged-in user.
     """
     task = Task.query.filter_by(id=id, user_id=current_user.id).first()
+
     if not task:
         return jsonify({"message": f"No task found with ID {id} for the current user."}), 404
     
