@@ -5,8 +5,9 @@ This is a Task Management API built with Flask, allowing users to create, read, 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
 - [Setup and Run](#setup-and-run)
-- [Testing the API](#testing-the-api)
-- [Accessing the MySQL Database Manually](#accessing-the-mysql-database-manually)
+- [Testing the API Locally](#testing-the-api-locally)
+- [Accessing the MySQL Database Manually (Local Only)](#accessing-the-mysql-database-manually-local-only)
+- [Testing the API on External IP](#testing-the-api-on-external-ip)
 
 ## Prerequisites
 
@@ -53,9 +54,9 @@ Follow these steps to set up and run the API locally using Docker Compose:
 
 4. The API will be accessible at `http://localhost:5000`.
 
-## Testing the API
+## Testing the API Locally
 
-You can test the API endpoints using cURL.
+You can test the API endpoints using cURL at `http://localhost:5000`.
 
 1. **Register a new user**:
 
@@ -122,7 +123,7 @@ You can test the API endpoints using cURL.
 
 ## Accessing the MySQL Database Manually
 
-To manually access the MySQL database running in your Docker container, follow these steps:
+When you run the API locally using Docker Compose, the MySQL database running in your Docker container can be accessed with these following steps:
 
 1. **Ensure Docker is Running**: Make sure your Docker service is running.
 
@@ -145,7 +146,7 @@ To manually access the MySQL database running in your Docker container, follow t
 5. **Connect to the MySQL Container**: Use the following command to open a bash shell inside the MySQL container (replace `container_name` with the actual name of your MySQL container):
 
     ```bash
-    docker exec -it contianer_name bash
+    docker exec -it container_name bash
     ```
 
 6. **Login to MySQL**: Once inside the container, you can log in to the MySQL server using the following command (replace `root` and `your_password` with your MySQL username and password defined in `.env` file):
@@ -156,7 +157,7 @@ To manually access the MySQL database running in your Docker container, follow t
 
     You will be prompted to enter `your_password`.
 
-7. **Interact with the Database**: After successfully logging in, run the following SQL commands show the databases tables (replace `your_db_name` with your database name set in `.env` file):
+7. **Interact with the Database**: After successfully logging in, run the following SQL commands show the databases tables (replace `your_db_name` with your database name set in the `.env` file):
 
     ```sql
     SHOW DATABASES;
@@ -175,4 +176,71 @@ To manually access the MySQL database running in your Docker container, follow t
 
     ```sql
     EXIT;
+    ```
+
+## Testing the API on External IP
+
+The Task Management API is also deployed on Google Kubernetes Engine and can be accessed using cURL at the external IP address `http://35.233.152.104:5000`.
+
+1. **Register a new user**:
+
+    ```bash
+    curl -X POST http://35.233.152.104:5000/register \
+    -H "Content-Type: application/json" \
+    -d '{"username": "testuser", "password": "testpassword"}'
+    ```
+
+2. **Login the user** (save cookies):
+
+    ```bash
+    curl -X POST http://35.233.152.104:5000/login \
+    -H "Content-Type: application/json" \
+    -d '{"username": "testuser", "password": "testpassword"}' \
+    -c cookie.txt
+    ```
+
+3. **Create a new task**:
+
+    ```bash
+    curl -X POST http://35.233.152.104:5000/tasks \
+    -H "Content-Type: application/json" \
+    -b cookie.txt \
+    -d '{"title": "New Task", "description": "Description of the task", "dueDate": "2025-01-26T12:00:00", "status": "pending"}'
+    ```
+
+4. **Get all tasks**:
+
+    ```bash
+    curl -X GET http://35.233.152.104:5000/tasks \
+    -b cookie.txt
+    ```
+
+5. **Get a task by ID**:
+
+    ```bash
+    curl -X GET http://35.233.152.104:5000/tasks/{id} \
+    -b cookie.txt
+    ```
+
+6. **Update a task**:
+
+    ```bash
+    curl -X PUT http://35.233.152.104:5000/tasks/{id} \
+    -H "Content-Type: application/json" \
+    -b cookie.txt \
+    -d '{"title": "Updated Task", "description": "Updated description", "dueDate": "2025-01-30T12:00:00", "status": "in-progress"}'
+    ```
+
+7. **Delete a task**:
+
+    ```bash
+    curl -X DELETE http://35.233.152.104:5000/tasks/{id} \
+    -b cookie.txt
+    ```
+
+8. **Logout**:
+
+    ```bash
+    curl -X POST http://35.233.152.104:5000/logout \
+    -b cookie.txt
     ```
